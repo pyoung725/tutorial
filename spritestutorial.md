@@ -148,3 +148,93 @@ let myfish = sprites.create(img`
 
 
 ## Game Stats(Info)
+
+```ghost
+info.onLifeZero(function () {
+    game.setGameOverEffect(false, effects.melt)
+    game.gameOver(false)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    otherSprite.startEffect(effects.ashes)
+    music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
+    otherSprite.setPosition(randint(10, 150), randint(10, 110))
+    pause(200)
+    info.changeScoreBy(1)
+})
+info.onScore(20, function () {
+    game.gameOver(true)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    music.play(music.melodyPlayable(music.smallCrash), music.PlaybackMode.InBackground)
+    otherSprite.setPosition(140, 10)
+    pause(200)
+    info.changeLifeBy(-1)
+})
+scene.setBackgroundColor(0)
+effects.bubbles.startScreenEffect()
+let myplayer = sprites.create(img`
+    .............ccfff..............
+    ...........ccddbcf..............
+    ..........ccddbbf...............
+    ..........fccbbcf...............
+    .....fffffccccccff.........ccc..
+    ...ffbbbbbbbcbbbbcfff....ccbbc..
+    ..fbbbbbbbbcbcbbbbcccff.cdbbc...
+    ffbbbbbbffbbcbcbbbcccccfcdbbf...
+    fbcbbb11ff1bcbbbbbcccccffbbf....
+    fbbb11111111bbbbbcccccccbbcf....
+    .fb11133cc11bbbbcccccccccccf....
+    ..fccc31c111bbbcccccbdbffbbcf...
+    ...fc13c111cbbbfcddddcc..fbbf...
+    ....fccc111fbdbbccdcc.....fbbf..
+    ........ccccfcdbbcc........fff..
+    .............fffff..............
+    `, SpriteKind.Player)
+controller.moveSprite(myplayer)
+myplayer.setStayInScreen(true)
+let myenemy = sprites.create(img`
+    . . . . 5 . . . . . . . . . . . 
+    . . . 5 . . 5 . . . . . . . . . 
+    . . 5 2 2 5 . . . . . . . 5 5 . 
+    . 5 2 5 5 2 2 . . . . . 5 5 . . 
+    . 2 2 5 . . 2 2 . . . 5 5 2 2 . 
+    . . . . . . 2 2 . . 5 5 2 2 2 2 
+    . . . . . 2 2 2 . 2 2 2 2 2 2 2 
+    . . . . . 2 5 2 . 2 2 2 . 2 2 2 
+    . . . 5 5 2 5 5 . 2 2 . . . 2 2 
+    . . 5 5 2 2 2 5 . 2 2 . . . 2 2 
+    . . . 2 2 2 . 5 2 2 2 . . 2 2 2 
+    . . 2 2 2 . . . 2 2 . . 2 2 2 . 
+    . . 2 2 . . 1 . 2 2 . . 5 2 . . 
+    . . 2 2 . . . 2 2 2 . . 5 5 5 5 
+    . . 2 2 2 2 2 2 2 2 . . . 5 5 . 
+    . . . 2 2 2 2 2 2 . . . . . 5 5 
+    `, SpriteKind.Enemy)
+myenemy.setScale(2.5, ScaleAnchor.Middle)
+myenemy.setPosition(140, 10)
+myenemy.follow(myplayer, 30)
+info.setLife(3)
+let myfish = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . c c c c . . . . 
+    . . . . . . c c d d d d c . . . 
+    . . . . . c c c c c c d c . . . 
+    . . . . c c 4 4 4 4 d c c . . . 
+    . . . c 4 d 4 4 4 4 4 1 c . c c 
+    . . c 4 4 4 1 4 4 4 4 d 1 c 4 c 
+    . c 4 4 4 4 1 4 4 4 4 4 1 c 4 c 
+    f 4 4 4 4 4 1 4 4 4 4 4 1 4 4 f 
+    f 4 4 4 f 4 1 c c 4 4 4 1 f 4 f 
+    f 4 4 4 4 4 1 4 4 f 4 4 d f 4 f 
+    . f 4 4 4 4 1 c 4 f 4 d f f f f 
+    . . f f 4 d 4 4 f f 4 c f c . . 
+    . . . . f f 4 4 4 4 c d b c . . 
+    . . . . . . f f f f d d d c . . 
+    . . . . . . . . . . c c c . . . 
+    `, SpriteKind.Food)
+myfish.setScale(0.8, ScaleAnchor.Middle)
+myfish.setPosition(randint(10, 150), randint(10, 110))
+myfish.setBounceOnWall(true)
+myfish.setVelocity(50, 50)
+info.setScore(0)
+```
