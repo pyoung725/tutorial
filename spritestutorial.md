@@ -1,4 +1,4 @@
-# Collection Game Sprites Tutorial
+# Collection Game-Sprites
 ## Introduction 
 In this tutorial you will make a game where the player needs to collect 20 items while staying away from the enemy
 
@@ -367,7 +367,180 @@ myfish.setVelocity(50, 50)
 myfish.setBounceOnWall(true)
 ```
 
-## Game Stats(Info)  
+## Game Info  
+game **info** includes *score*, *lives*, and a *countdown timer*
+in **``||info:Info||``** find  
+``||info(noclick):set score||``  
+add it to the bottom of ``||loops(noclick):on start||``    
+  - set the score to 0
 
+in **``||info:Info||``** find  
+``||info(noclick):set life||``  
+add it to the bottom of ``||loops(noclick):on start||``    
+  - set the lives to 3
+
+```blocks
+scene.setBackgroundColor(0)
+effects.bubbles.startScreenEffect()
+let myplayer = sprites.create(img`
+    .............ccfff..............
+    ...........ccddbcf..............
+    ..........ccddbbf...............
+    ..........fccbbcf...............
+    .....fffffccccccff.........ccc..
+    ...ffbbbbbbbcbbbbcfff....ccbbc..
+    ..fbbbbbbbbcbcbbbbcccff.cdbbc...
+    ffbbbbbbffbbcbcbbbcccccfcdbbf...
+    fbcbbb11ff1bcbbbbbcccccffbbf....
+    fbbb11111111bbbbbcccccccbbcf....
+    .fb11133cc11bbbbcccccccccccf....
+    ..fccc31c111bbbcccccbdbffbbcf...
+    ...fc13c111cbbbfcddddcc..fbbf...
+    ....fccc111fbdbbccdcc.....fbbf..
+    ........ccccfcdbbcc........fff..
+    .............fffff..............
+    `, SpriteKind.Player)
+controller.moveSprite(myplayer)
+myplayer.setStayInScreen(true)
+let myenemy = sprites.create(img`
+    . . . . 5 . . . . . . . . . . . 
+    . . . 5 . . 5 . . . . . . . . . 
+    . . 5 2 2 5 . . . . . . . 5 5 . 
+    . 5 2 5 5 2 2 . . . . . 5 5 . . 
+    . 2 2 5 . . 2 2 . . . 5 5 2 2 . 
+    . . . . . . 2 2 . . 5 5 2 2 2 2 
+    . . . . . 2 2 2 . 2 2 2 2 2 2 2 
+    . . . . . 2 5 2 . 2 2 2 . 2 2 2 
+    . . . 5 5 2 5 5 . 2 2 . . . 2 2 
+    . . 5 5 2 2 2 5 . 2 2 . . . 2 2 
+    . . . 2 2 2 . 5 2 2 2 . . 2 2 2 
+    . . 2 2 2 . . . 2 2 . . 2 2 2 . 
+    . . 2 2 . . 1 . 2 2 . . 5 2 . . 
+    . . 2 2 . . . 2 2 2 . . 5 5 5 5 
+    . . 2 2 2 2 2 2 2 2 . . . 5 5 . 
+    . . . 2 2 2 2 2 2 . . . . . 5 5 
+    `, SpriteKind.Enemy)
+myenemy.setScale(2.5, ScaleAnchor.Middle)
+myenemy.setPosition(140, 10)
+myenemy.follow(myplayer, 30)
+let myfish = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . c c c c . . . . 
+    . . . . . . c c d d d d c . . . 
+    . . . . . c c c c c c d c . . . 
+    . . . . c c 4 4 4 4 d c c . . . 
+    . . . c 4 d 4 4 4 4 4 1 c . c c 
+    . . c 4 4 4 1 4 4 4 4 d 1 c 4 c 
+    . c 4 4 4 4 1 4 4 4 4 4 1 c 4 c 
+    f 4 4 4 4 4 1 4 4 4 4 4 1 4 4 f 
+    f 4 4 4 f 4 1 c c 4 4 4 1 f 4 f 
+    f 4 4 4 4 4 1 4 4 f 4 4 d f 4 f 
+    . f 4 4 4 4 1 c 4 f 4 d f f f f 
+    . . f f 4 d 4 4 f f 4 c f c . . 
+    . . . . f f 4 4 4 4 c d b c . . 
+    . . . . . . f f f f d d d c . . 
+    . . . . . . . . . . c c c . . . 
+    `, SpriteKind.Food)
+myfish.setPosition(randint(10, 150), randint(10, 110))
+myfish.setVelocity(50, 50)
+myfish.setBounceOnWall(true)
+info.setScore(0)
+info.setLife(3)
+```
 
 ## Overlap conditionals
+an **overlap** is a **container block** that is triggered when 2 sprites are in the same place, come into contact, or touch each other  
+
+**overlaps** in this collection game happen when:    
+  - the player eats the food  
+  - the enemy catches the player  
+
+in ``||sprites:Sprites||`` find the container block   
+``||sprites(noclick):on sprite of kind Player▼ overlaps otherSprite||``  
+  - drag it into an empty area of the workspace  
+  - change one of the kinds to *Food▼*  
+
+in ``||sprites:Sprites||`` find  
+``||sprites(noclick):mySprite▼ start spray▼ effect||``
+  - drag it inside the ``||sprites(noclick):overlap||`` container  
+  - Recall: variable *names▼* only store one specific sprite  
+  - However, some games have multiple enemy or food sprites    
+  - trash the name *``||variables(noclick):mySprite▼||``*  
+  - replace it with *``||variables(noclick):sprite||``* or *``||variables(noclick):otherSprite||``* from the ``||sprites(noclick):overlap||`` container  
+    - no ▼ means it's *not* the name of a specific sprite  
+    - the program looks for *kinds* instead of *names*  
+in ``||music:Music||`` find  
+``||music:play sound ba ding||``
+  - drag it inside the ``||sprites(noclick):overlap||`` container 
+  - change *until done▼* to *in background▼*  
+in ``||info:Info||`` find  
+``||info(noclick):change score||``
+  - drag it inside the ``||sprites(noclick):overlap||`` container  
+  - make sure it says *change score by 1*  
+in your ``||loops(noclick):on start||`` container find  
+``||sprites(noclick):set myfood▼ position||``  
+  - right click or 2-finger click on the blue part where it says *position*  
+  - copy the block  
+  - go down to the ``||sprites(noclick):overlap||`` container
+  - ctrl V to paste the block  
+  - drag it into the ``||sprites(noclick):overlap||`` container  
+  - trash the name *``||variables(noclick):myfood▼||``*  
+  - replace it with *``||variables(noclick):sprite||``* or *``||variables(noclick):otherSprite||``* from the ``||sprites(noclick):overlap||`` container  
+in ``||loops:Loops||`` find  
+``||loops(noclick):pause||``  
+  - add it to the bottom of the ``||sprites(noclick):overlap||`` container  
+
+```blocks
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    otherSprite.startEffect(effects.ashes)
+    music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
+    info.changeScoreBy(1)
+    otherSprite.setPosition(randint(10, 150), randint(10, 110))
+    pause(100)
+})  
+```
+
+## Overlap conditionals part 2
+use an ``||sprites(noclick):overlap||`` container to construct the following code  
+
+when the ``||sprites(noclick):*player* sprite overlaps an *enemy* sprite||``  
+  - ``||music(noclick):play sound small crash||``  
+  - ``||info(noclick):lose a life||``  
+  - reset the ``||sprites(noclick):*enemy* sprite position||``  
+  - ``||loops(noclick):pause 100 ms||``  
+
+``blocks  
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    music.play(music.melodyPlayable(music.smallCrash), music.PlaybackMode.InBackground)
+    info.changeLifeBy(-1)
+    otherSprite.setPosition(140, 10)
+    pause(100)
+})
+```
+
+## Game over info conditionals
+the last thing we need is to determine when the game is over  
+
+in ``||info:Info||`` find the  
+``||info(noclick):on score||`` container  
+inside the container put   
+  - ``||loops(noclick):pause 100 ms||``
+  - ``||game(noclick):game over win||``  
+ 
+in ``||info:Info||`` find the  
+``||info(noclick):on life zero||`` container  
+inside the container put   
+  - ``||game(noclick):use effect||``
+  - change the effect to something for game over lose
+  - ``||game(noclick):game over lose||``  
+
+```blocks
+info.onScore(20, function () {
+    pause(100)
+    game.gameOver(true)
+})
+info.onLifeZero(function () {
+    game.setGameOverEffect(false, effects.melt)
+    game.gameOver(false)
+})
+```
