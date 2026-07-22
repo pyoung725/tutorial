@@ -7,6 +7,8 @@ Learning goals
 + *create* **sprites** and *apply* **sprite properties**  
 + *create* **visual** and **sound effects**
 
+Before we start, make sure you are **signed in** to makeCode Arcade  
+
 Let's get started!
 
 ## Container Blocks
@@ -509,7 +511,7 @@ when the ``||sprites(noclick):*player* sprite overlaps an *enemy* sprite||``
   - reset the ``||sprites(noclick):*enemy* sprite position||``  
   - ``||loops(noclick):pause 100 ms||``  
 
-``blocks  
+```blocks  
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     music.play(music.melodyPlayable(music.smallCrash), music.PlaybackMode.InBackground)
     info.changeLifeBy(-1)
@@ -544,3 +546,18 @@ info.onLifeZero(function () {
     game.gameOver(false)
 })
 ```
+
+## Share game  
+to turn in game assignments, you need to get a share link and put it in google classroom  
+
+- click the *share symbol* in the upper right 
+
+- click on *share project*  
+
+- *copy* the share link
+
+- go to the Collection Game Sprites Tutorial Assignment in google classroom  
+
+- on the right side under your work, *add a link*  
+
+- paste (ctrl V) the share link 
